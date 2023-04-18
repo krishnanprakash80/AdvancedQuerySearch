@@ -209,7 +209,7 @@ export default class extends PureComponent {
 
     const parsed = parseToken(value)
 
-    const hasAttributeName = parsed.attributeName && value.indexOf('=') > -1
+    const hasAttributeName = parsed.attributeName && value.indexOf(':') > -1
     const selectedIdx = hasAttributeName ? attributes
       .findIndex(attr => attr[nameKey] === parsed.attributeName) : -1
 
