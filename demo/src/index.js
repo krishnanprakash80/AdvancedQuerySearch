@@ -15,7 +15,7 @@ injectGlobal`
 
 const Container = styled('div')`
   background: #FFFFFF;
-  width: 50vw;
+  width: 90vw;
   height: 100vh;
   padding: 20px;
 `
@@ -67,7 +67,7 @@ const data = [
   {
     name: 'Authorization_Type',
     type: 'string',
-    enumerations: ['In Patient', 'Out Patient']
+    enumerations: ['IP', 'OP','IP/OP']
   },
   {
     name: 'Date_Range',
@@ -82,8 +82,14 @@ const data = [
   {
     name: 'Provider',
     type: 'string',
-    enumerations: null
+    enumerations: ['Healthnet California','California','Qualchoic','Sunshine Health']
   },
+  {
+    name: 'ProcedureCode',
+    type: 'string',
+    enumerations: null
+
+  }
 
 
 ]
@@ -127,7 +133,6 @@ class Demo extends Component {
       //   </Link>
       // </Footer>
     )
-
     return (
       <Container>
         <Title>TDM Query Search</Title>
@@ -139,7 +144,7 @@ class Demo extends Component {
           dropdownProps={dropdownProps}
           selectorProps={selectorProps}
           footerComponent={footer} />
-
+{/* 
         <Title>Complex Query Example</Title>
         <Assist
           placeholder='Search Logs ⌘ ⇧ F'
@@ -149,7 +154,7 @@ class Demo extends Component {
           inputProps={inputProps}
           dropdownProps={dropdownProps}
           selectorProps={selectorProps}
-          footerComponent={footer} />
+          footerComponent={footer} /> */}
       </Container>
     )
   }

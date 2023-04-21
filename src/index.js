@@ -3,7 +3,6 @@ import PropTypes from 'prop-types'
 import PageClick from 'react-page-click'
 import { extractTokens } from './utils/token'
 import Dropdown from './components/dropdown'
-
 import {
   Container,
   InputContainer,
@@ -29,7 +28,8 @@ export default class extends Component {
     inputProps: PropTypes.object,
     dropdownProps: PropTypes.object,
     selectorProps: PropTypes.object,
-    listProps: PropTypes.object
+    listProps: PropTypes.object,
+    results: PropTypes.array
   }
 
   static defaultProps = { // eslint-disable-line
@@ -43,7 +43,8 @@ export default class extends Component {
     inputProps: {},
     dropdownProps: {},
     selectorProps: {},
-    listProps: {}
+    listProps: {},
+    results: []
   }
 
   constructor (props) {
@@ -70,7 +71,9 @@ export default class extends Component {
       dropdownOpen: false,
       dropdownValue: null,
       dropdownX: null,
-      dropdownY: null
+      dropdownY: null,
+      results: [],
+      search: false
     }
   }
 
@@ -360,10 +363,64 @@ export default class extends Component {
       dropdownValue,
       dropdownX,
       dropdownY,
-      overlayComponents
+      overlayComponents,
+      results
     } = this.state
 
+    const filterItems = (arr, field, value) => {
+      if (field != null) {
+        return arr.filter((item) => {
+          return item[field] === value;
+        })
+      }
+    }
+
     const collapsed = !this.state.focused && collapseOnBlur
+    const searchData = () => {
+      let resultsData = [
+          { Name: 'Amanda Jones', LOB: 'Medicare', State: 'FL', Provider: 'Healthnet California', ProcedureCode:1287877, Authorization_Type: 'IP', DateRange:'09/02/21 - Current'},
+          { Name: 'Constantine J.', LOB: 'Medicare', State: 'FL', Provider: 'California', ProcedureCode:1287878, Authorization_Type: 'OP', DateRange:'09/02/2021 - Current'},
+          { Name: 'Michael F', LOB: 'Medicare', State: 'FL', Provider: 'Qualchoice', ProcedureCode:1287879, Authorization_Type: 'IP/OP', DateRange:'10/02/2021 - 11/02/2022'},
+          { Name: 'Krystal Peters', LOB: 'Medicare', State: 'FL', Provider: 'Sunshine Health', ProcedureCode:1287880, Authorization_Type: 'OP', DateRange:'09/02/2021 - Current'},
+          { Name: 'Harry Smith', LOB: 'Medicare', State: 'FL', Provider: 'Qualchoic', ProcedureCode:1287881, Authorization_Type: 'IP', DateRange:'12/02/2021 - Current'},
+          { Name: 'Andy Wilson', LOB: 'Medicare', State: 'FL', Provider: 'California', ProcedureCode:1287882, Authorization_Type: 'IP', DateRange:'09/02/21 - Current'},
+          { Name: 'Terrie Soper', LOB: 'Medicare', State: 'TX', Provider: 'Qualchoice', ProcedureCode:1287883, Authorization_Type: 'OP', DateRange:'09/02/2021 - Current'},
+          { Name: 'Marc J', LOB: 'Medicare', State: 'TX', Provider: 'Sunshine Health', ProcedureCode:1287884, Authorization_Type: 'IP/OP', DateRange:'10/02/2021 - 11/02/2022'},
+          { Name: 'Brianna M', LOB: 'Medicare', State: 'TX', Provider: 'Qualchoic', ProcedureCode:1287885, Authorization_Type: 'OP', DateRange:'09/02/2021 - Current'},
+          { Name: 'David O', LOB: 'Medicare', State: 'TX', Provider: 'Sunshine Health', ProcedureCode:1287886, Authorization_Type: 'IP', DateRange:'12/02/2021 - Current'}
+      ]
+      console.log('Query is' + value);
+      let filterData = [];
+      if(value && value != '') {
+        let split1 = value.split(" and ");
+        
+        if(split1 && split1.length > 0)
+        {
+          let finalData = [];
+          split1.forEach(el => {
+            let kp = el.split(":")
+            if(kp && kp.length === 2) {
+              if(finalData.length === 0) {
+                finalData = filterItems(resultsData, kp[0], kp[1]);
+              }
+              else {
+                finalData = filterItems(finalData, kp[0], kp[1]);
+              }
+            }
+          });
+          filterData = finalData;
+        }
+      }
+      else {
+        filterData = [];
+      }
+  //this.stea.results = filterData;
+      this.setState({
+        results: filterData,
+        search: true
+      })
+  
+    }
 
     return (
       <PageClick
@@ -410,8 +467,51 @@ export default class extends Component {
               dropdownProps={dropdownProps}
               selectorProps={selectorProps}
               listProps={listProps} />}
+        <br></br>
+        <input type="button" value="Search" onClick={searchData} style={{'background-color': "#395e9e", 'padding': '10px', 'color': '#FFFFFF', 'font-size': '20px', 'border-radius': '5px'}}></input>
+
+        {this.state.results.length > 0 &&
+          <div className="container">  
+        <br></br>
+            <h1> Search Results </h1>  
+        <br></br>
+            <table className="table table-bordered" cellPadding="5" cellSpacing="1" width="100%">  
+                <tr style={{'height': "30px", 'backgroundColor' : '#D0D0D0'}}>  
+                    <th style={{'text-align': "left", 'padding-left': '7px'}}>Name</th>  
+                    <th style={{'text-align': "left", 'padding-left': '7px'}}>LOB</th>  
+                    <th style={{'text-align': "left", 'padding-left': '7px'}}>State</th>  
+                    <th style={{'text-align': "left", 'padding-left': '7px'}}>Provider</th>  
+                    <th style={{'text-align': "left", 'padding-left': '7px'}}>Procedure Code</th>  
+                    <th style={{'text-align': "left", 'padding-left': '7px'}}>Authorization Type</th>
+                    <th style={{'text-align': "left", 'padding-left': '7px'}}>Coverage Effective Period</th>
+                </tr>  
+        
+                {this.state.results.map((res, index) => (  
+                  <tr style={{'height': "30px", 'backgroundColor' : '#F5F5F5'}} data-index={index}>  
+                    <td style={{'padding-left': '7px'}}>{res.Name}</td>  
+                    <td style={{'padding-left': '7px'}}>{res.LOB}</td>  
+                    <td style={{'padding-left': '7px'}}>{res.State}</td>  
+                    <td style={{'padding-left': '7px'}}>{res.Provider}</td>
+                    <td style={{'padding-left': '7px'}}>{res.ProcedureCode}</td>
+                    <td style={{'padding-left': '7px'}}>{res.Authorization_Type}</td>
+                    <td style={{'padding-left': '7px'}}>{res.DateRange}</td>
+                  </tr>  
+                ))}  
+        
+            </table>  
+        
+            </div>
+        }
+
+        { this.state.search && this.state.results.length === 0 ?
+
+          <div> <br /> No Results found </div> 
+          : <br></br>
+        }
+
         </Container>
       </PageClick>
+      
     )
   }
 }
