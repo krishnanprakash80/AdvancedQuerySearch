@@ -378,16 +378,16 @@ export default class extends Component {
     const collapsed = !this.state.focused && collapseOnBlur
     const searchData = () => {
       let resultsData = [
-          { Name: 'Amanda Jones', LOB: 'Medicare', State: 'FL', Provider: 'Healthnet California', ProcedureCode:1287877, Authorization_Type: 'IP', DateRange:'09/02/21 - Current'},
-          { Name: 'Constantine J.', LOB: 'Medicare', State: 'FL', Provider: 'California', ProcedureCode:1287878, Authorization_Type: 'OP', DateRange:'09/02/2021 - Current'},
-          { Name: 'Michael F', LOB: 'Medicare', State: 'FL', Provider: 'Qualchoice', ProcedureCode:1287879, Authorization_Type: 'IP/OP', DateRange:'10/02/2021 - 11/02/2022'},
-          { Name: 'Krystal Peters', LOB: 'Medicare', State: 'FL', Provider: 'Sunshine Health', ProcedureCode:1287880, Authorization_Type: 'OP', DateRange:'09/02/2021 - Current'},
-          { Name: 'Harry Smith', LOB: 'Medicare', State: 'FL', Provider: 'Qualchoic', ProcedureCode:1287881, Authorization_Type: 'IP', DateRange:'12/02/2021 - Current'},
-          { Name: 'Andy Wilson', LOB: 'Medicare', State: 'FL', Provider: 'California', ProcedureCode:1287882, Authorization_Type: 'IP', DateRange:'09/02/21 - Current'},
-          { Name: 'Terrie Soper', LOB: 'Medicare', State: 'TX', Provider: 'Qualchoice', ProcedureCode:1287883, Authorization_Type: 'OP', DateRange:'09/02/2021 - Current'},
-          { Name: 'Marc J', LOB: 'Medicare', State: 'TX', Provider: 'Sunshine Health', ProcedureCode:1287884, Authorization_Type: 'IP/OP', DateRange:'10/02/2021 - 11/02/2022'},
-          { Name: 'Brianna M', LOB: 'Medicare', State: 'TX', Provider: 'Qualchoic', ProcedureCode:1287885, Authorization_Type: 'OP', DateRange:'09/02/2021 - Current'},
-          { Name: 'David O', LOB: 'Medicare', State: 'TX', Provider: 'Sunshine Health', ProcedureCode:1287886, Authorization_Type: 'IP', DateRange:'12/02/2021 - Current'}
+          { Name: 'Amanda Jones', LOB: 'Medicare', State: 'FL', Provider: 'Healthnet California', ProcedureCode:1287877, Authorization_Type: 'IP', DateRange:'09/02/21 - Current', Authorization_Status: 'Pending'},
+          { Name: 'Constantine J.', LOB: 'Medicare', State: 'FL', Provider: 'California', ProcedureCode:1287878, Authorization_Type: 'OP', DateRange:'09/02/2021 - Current', Authorization_Status: 'Pending'},
+          { Name: 'Michael F', LOB: 'Medicare', State: 'FL', Provider: 'Qualchoice', ProcedureCode:1287879, Authorization_Type: 'IP/OP', DateRange:'10/02/2021 - 11/02/2022', Authorization_Status: 'Pending'},
+          { Name: 'Krystal Peters', LOB: 'Medicare', State: 'FL', Provider: 'Sunshine Health', ProcedureCode:1287880, Authorization_Type: 'OP', DateRange:'09/02/2021 - Current', Authorization_Status: 'Approved'},
+          { Name: 'Harry Smith', LOB: 'Medicare', State: 'FL', Provider: 'Qualchoic', ProcedureCode:1287881, Authorization_Type: 'IP', DateRange:'12/02/2021 - Current', Authorization_Status: 'Approved'},
+          { Name: 'Andy Wilson', LOB: 'Medicare', State: 'FL', Provider: 'California', ProcedureCode:1287882, Authorization_Type: 'IP', DateRange:'09/02/21 - Current', Authorization_Status: 'Approved'},
+          { Name: 'Terrie Soper', LOB: 'Medicare', State: 'TX', Provider: 'Qualchoice', ProcedureCode:1287883, Authorization_Type: 'OP', DateRange:'09/02/2021 - Current', Authorization_Status: 'Approved'},
+          { Name: 'Marc J', LOB: 'Medicare', State: 'TX', Provider: 'Sunshine Health', ProcedureCode:1287884, Authorization_Type: 'IP/OP', DateRange:'10/02/2021 - 11/02/2022', Authorization_Status: 'Deny'},
+          { Name: 'Brianna M', LOB: 'Medicare', State: 'TX', Provider: 'Qualchoic', ProcedureCode:1287885, Authorization_Type: 'OP', DateRange:'09/02/2021 - Current', Authorization_Status: 'Deny'},
+          { Name: 'David O', LOB: 'Medicare', State: 'TX', Provider: 'Sunshine Health', ProcedureCode:1287886, Authorization_Type: 'IP', DateRange:'12/02/2021 - Current', Authorization_Status: 'Deny'}
       ]
       console.log('Query is' + value);
       let filterData = [];
@@ -483,6 +483,7 @@ export default class extends Component {
                     <th style={{'text-align': "left", 'padding-left': '7px'}}>Provider</th>  
                     <th style={{'text-align': "left", 'padding-left': '7px'}}>Procedure Code</th>  
                     <th style={{'text-align': "left", 'padding-left': '7px'}}>Authorization Type</th>
+                    <th style={{'text-align': "left", 'padding-left': '7px'}}>Status</th>
                     <th style={{'text-align': "left", 'padding-left': '7px'}}>Coverage Effective Period</th>
                 </tr>  
         
@@ -494,6 +495,7 @@ export default class extends Component {
                     <td style={{'padding-left': '7px'}}>{res.Provider}</td>
                     <td style={{'padding-left': '7px'}}>{res.ProcedureCode}</td>
                     <td style={{'padding-left': '7px'}}>{res.Authorization_Type}</td>
+                    <td style={{'padding-left': '7px'}}>{res.Authorization_Status}</td>
                     <td style={{'padding-left': '7px'}}>{res.DateRange}</td>
                   </tr>  
                 ))}  
